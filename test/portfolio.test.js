@@ -54,7 +54,7 @@ test('PORTFOLIO_DATA verification', async (t) => {
   });
 });
 
-test('Production build verification', async (t) => {
+test('Production build & SEO metadata verification', async (t) => {
   await t.test('dist directory contains index.html and assets', () => {
     const distPath = path.resolve('dist');
     assert.ok(fs.existsSync(distPath), 'dist/ directory must exist');
@@ -64,6 +64,16 @@ test('Production build verification', async (t) => {
 
     const htmlContent = fs.readFileSync(indexPath, 'utf-8');
     assert.ok(htmlContent.includes('PRABHAV.exe'), 'Title or branding in index.html');
+    assert.ok(htmlContent.includes('og:title'), 'OpenGraph title present');
+    assert.ok(htmlContent.includes('twitter:card'), 'Twitter card meta present');
+    assert.ok(htmlContent.includes('theme-color'), 'Theme color meta present');
+  });
+
+  await t.test('vercel.json exists with valid SPA rewrite', () => {
+    const vercelConfigPath = path.resolve('vercel.json');
+    assert.ok(fs.existsSync(vercelConfigPath), 'vercel.json must exist');
+    const vercelConfig = JSON.parse(fs.readFileSync(vercelConfigPath, 'utf-8'));
+    assert.equal(vercelConfig.outputDirectory, 'dist');
+    assert.ok(Array.isArray(vercelConfig.rewrites));
   });
 });
-

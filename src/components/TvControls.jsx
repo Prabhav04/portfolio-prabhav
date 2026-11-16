@@ -52,6 +52,7 @@ export function TvControls({
             onTogglePower();
           }}
           title={isPoweredOn ? 'Turn TV Off' : 'Turn TV On'}
+          aria-label={isPoweredOn ? 'Turn TV Off' : 'Turn TV On'}
           className={`retro-btn p-2 rounded border-2 border-deepBlack flex items-center justify-center ${
             isPoweredOn 
               ? 'bg-red-600 hover:bg-red-500 text-white shadow-pixel-sm' 
@@ -83,6 +84,7 @@ export function TvControls({
                   onSelectChannel(chan.id);
                 }}
                 disabled={!isPoweredOn}
+                aria-label={`Tune to Channel ${chan.id} ${chan.name}`}
                 className={`retro-btn py-2 px-1 rounded flex flex-col items-center justify-center font-pixel text-[9px] border-2 transition-all ${
                   isActive
                     ? 'bg-acid text-deepBlack border-deepBlack shadow-pixel font-bold'
@@ -104,6 +106,7 @@ export function TvControls({
               onPrevChannel();
             }}
             disabled={!isPoweredOn}
+            aria-label="Previous Channel"
             className="retro-btn flex-1 py-1.5 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-40 border-2 border-black rounded text-[9px] font-pixel flex items-center justify-center gap-1 text-white shadow-pixel-sm"
           >
             <ChevronUp className="w-3.5 h-3.5 text-acid" />
@@ -115,6 +118,7 @@ export function TvControls({
               onNextChannel();
             }}
             disabled={!isPoweredOn}
+            aria-label="Next Channel"
             className="retro-btn flex-1 py-1.5 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-40 border-2 border-black rounded text-[9px] font-pixel flex items-center justify-center gap-1 text-white shadow-pixel-sm"
           >
             <span>NEXT</span>
@@ -133,6 +137,7 @@ export function TvControls({
               onOpenMenu();
             }}
             disabled={!isPoweredOn}
+            aria-label="Open Channel Guide Menu"
             className="retro-btn py-2 px-2 bg-acid text-deepBlack font-pixel text-[9px] border-2 border-deepBlack rounded shadow-pixel-sm flex items-center justify-center gap-1.5 hover:bg-acid-hover disabled:opacity-40"
           >
             <Menu className="w-3.5 h-3.5" />
@@ -146,6 +151,7 @@ export function TvControls({
               onBack();
             }}
             disabled={!isPoweredOn || !canGoBack}
+            aria-label="Go to Previous Channel in History"
             className="retro-btn py-2 px-2 bg-zinc-800 text-paperWhite font-pixel text-[9px] border-2 border-black rounded shadow-pixel-sm flex items-center justify-center gap-1.5 hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <RotateCcw className="w-3.5 h-3.5 text-signalCyan" />
@@ -162,6 +168,7 @@ export function TvControls({
               onToggleSound();
             }}
             title={soundEnabled ? 'Mute Procedural Audio' : 'Enable Procedural Audio'}
+            aria-label={soundEnabled ? 'Mute Procedural Audio' : 'Enable Procedural Audio'}
             className={`retro-btn px-2.5 py-1.5 rounded border border-black flex items-center gap-1.5 text-[8px] font-pixel ${
               soundEnabled ? 'bg-zinc-800 text-acid' : 'bg-zinc-900 text-zinc-500'
             }`}
@@ -177,6 +184,7 @@ export function TvControls({
               onToggleScanlines();
             }}
             title={scanlinesEnabled ? 'Turn Scanlines Off' : 'Turn Scanlines On'}
+            aria-label={scanlinesEnabled ? 'Turn CRT Scanlines Off' : 'Turn CRT Scanlines On'}
             className={`retro-btn px-2.5 py-1.5 rounded border border-black flex items-center gap-1.5 text-[8px] font-pixel ${
               scanlinesEnabled ? 'bg-zinc-800 text-signalCyan' : 'bg-zinc-900 text-zinc-500'
             }`}

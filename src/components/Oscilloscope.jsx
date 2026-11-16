@@ -181,3 +181,4 @@ export function Oscilloscope({ getAnalyser, isPlayingNote, isBgmActive }) {
     </div>
   );
 }
+

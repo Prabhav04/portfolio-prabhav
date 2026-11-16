@@ -81,6 +81,7 @@ export function ContactChannel({ onPlayClick }) {
               <button
                 onClick={handleCopyEmail}
                 title="Copy Email"
+                aria-label="Copy Email Address"
                 className="retro-btn p-1.5 bg-deepBlack text-acid hover:bg-zinc-800 border border-deepBlack shrink-0 ml-1"
               >
                 {copiedEmail ? <Check className="w-3.5 h-3.5 text-acid" /> : <Copy className="w-3.5 h-3.5" />}
@@ -132,6 +133,7 @@ export function ContactChannel({ onPlayClick }) {
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Visit Prabhav Narayanan GitHub Profile"
                 className="retro-btn p-1.5 bg-deepBlack text-acid hover:bg-zinc-800 border border-deepBlack font-pixel text-[8px] px-2"
               >
                 VISIT
@@ -172,11 +174,14 @@ export function ContactChannel({ onPlayClick }) {
           ) : (
             <form onSubmit={handleSend} className="space-y-2 text-xs flex-1 flex flex-col justify-between">
               <div>
-                <label className="font-pixel text-[8px] text-deepBlack/70 block mb-1">
+                <label htmlFor="callerName" className="font-pixel text-[8px] text-deepBlack/70 block mb-1">
                   CALLER / IDENTIFIER:
                 </label>
                 <input
+                  id="callerName"
+                  name="name"
                   type="text"
+                  autoComplete="name"
                   required
                   placeholder="e.g. Neo / Recruiter"
                   value={formData.name}
@@ -186,11 +191,14 @@ export function ContactChannel({ onPlayClick }) {
               </div>
 
               <div>
-                <label className="font-pixel text-[8px] text-deepBlack/70 block mb-1">
+                <label htmlFor="callerEmail" className="font-pixel text-[8px] text-deepBlack/70 block mb-1">
                   RETURN FREQUENCY (EMAIL):
                 </label>
                 <input
+                  id="callerEmail"
+                  name="email"
                   type="email"
+                  autoComplete="email"
                   required
                   placeholder="your.email@domain.com"
                   value={formData.email}
@@ -200,10 +208,12 @@ export function ContactChannel({ onPlayClick }) {
               </div>
 
               <div>
-                <label className="font-pixel text-[8px] text-deepBlack/70 block mb-1">
+                <label htmlFor="callerMessage" className="font-pixel text-[8px] text-deepBlack/70 block mb-1">
                   TRANSMISSION PAYLOAD (MESSAGE):
                 </label>
                 <textarea
+                  id="callerMessage"
+                  name="message"
                   rows="3"
                   required
                   placeholder="Write your transmission or project inquiry..."

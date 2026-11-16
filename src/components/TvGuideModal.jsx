@@ -32,6 +32,7 @@ export function TvGuideModal({
               onPlayClick?.();
               onClose();
             }}
+            aria-label="Close Channel Guide"
             className="retro-btn p-1.5 bg-deepBlack text-acid hover:bg-zinc-800 border-2 border-deepBlack"
           >
             <X className="w-5 h-5" />

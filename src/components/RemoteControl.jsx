@@ -67,6 +67,7 @@ export function RemoteControl({
           {onCloseMobile && (
             <button
               onClick={onCloseMobile}
+              aria-label="Close remote drawer"
               className="lg:hidden p-1 bg-deepBlack text-acid border border-deepBlack rounded"
             >
               <X className="w-4 h-4" />
@@ -80,6 +81,7 @@ export function RemoteControl({
         <button
           onClick={() => handleAction(onTogglePower)}
           title="TV Power"
+          aria-label={isPoweredOn ? 'Turn TV Off' : 'Turn TV On'}
           className={`retro-btn py-2 rounded-lg border-2 border-black flex flex-col items-center justify-center text-[7px] ${
             isPoweredOn ? 'bg-red-600 text-white shadow-sm' : 'bg-zinc-800 text-zinc-500'
           }`}
@@ -91,6 +93,7 @@ export function RemoteControl({
         <button
           onClick={() => handleAction(onToggleSound)}
           title="Mute / Unmute"
+          aria-label={soundEnabled ? 'Mute Procedural Audio' : 'Unmute Procedural Audio'}
           className={`retro-btn py-2 rounded-lg border-2 border-black flex flex-col items-center justify-center text-[7px] ${
             soundEnabled ? 'bg-zinc-700 text-acid' : 'bg-zinc-900 text-zinc-500'
           }`}
@@ -102,6 +105,7 @@ export function RemoteControl({
         <button
           onClick={() => handleAction(onToggleBgm)}
           title="Lo-Fi Ambient BGM"
+          aria-label={bgmEnabled ? 'Stop Lo-Fi Ambient BGM' : 'Start Lo-Fi Ambient BGM'}
           className={`retro-btn py-2 rounded-lg border-2 border-black flex flex-col items-center justify-center text-[7px] ${
             bgmEnabled ? 'bg-signalCyan text-deepBlack font-bold shadow-sm' : 'bg-zinc-800 text-zinc-400'
           }`}
@@ -122,6 +126,7 @@ export function RemoteControl({
                 key={chan.id}
                 onClick={() => handleAction(() => onSelectChannel(chan.id))}
                 disabled={!isPoweredOn}
+                aria-label={`Tune to Channel ${chan.id} ${chan.name}`}
                 className={`retro-btn py-2 rounded-md font-pixel text-xs border border-black flex items-center justify-center ${
                   isActive
                     ? 'bg-acid text-deepBlack font-bold shadow-pixel-sm'
@@ -143,6 +148,7 @@ export function RemoteControl({
           <button
             onClick={() => handleAction(onNextChannel)}
             disabled={!isPoweredOn}
+            aria-label="Next Channel"
             className="retro-btn w-full py-1.5 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 rounded border border-black flex items-center justify-center my-0.5 text-white"
           >
             <ChevronUp className="w-3.5 h-3.5 text-acid" />
@@ -150,6 +156,7 @@ export function RemoteControl({
           <button
             onClick={() => handleAction(onPrevChannel)}
             disabled={!isPoweredOn}
+            aria-label="Previous Channel"
             className="retro-btn w-full py-1.5 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 rounded border border-black flex items-center justify-center my-0.5 text-white"
           >
             <ChevronDown className="w-3.5 h-3.5 text-acid" />
@@ -162,6 +169,7 @@ export function RemoteControl({
           <button
             onClick={() => handleAction(onOpenMenu)}
             disabled={!isPoweredOn}
+            aria-label="Open EPG Program Guide Menu"
             className="retro-btn w-full h-full my-0.5 bg-acid text-deepBlack hover:bg-acid-hover disabled:opacity-30 rounded border border-deepBlack flex flex-col items-center justify-center gap-1 font-bold text-[8px]"
           >
             <Menu className="w-4 h-4" />
@@ -195,3 +203,4 @@ export function RemoteControl({
     </>
   );
 }
+
