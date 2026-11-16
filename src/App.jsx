@@ -4,6 +4,7 @@ import { useRetroAudio } from './hooks/useRetroAudio';
 import { EditorialShell } from './components/EditorialShell';
 import { TvFrame } from './components/TvFrame';
 import { TvGuideModal } from './components/TvGuideModal';
+import { RemoteControl } from './components/RemoteControl';
 
 import { HomeChannel } from './components/channels/HomeChannel';
 import { AboutChannel } from './components/channels/AboutChannel';
@@ -11,6 +12,7 @@ import { ProjectsChannel } from './components/channels/ProjectsChannel';
 import { TechStackChannel } from './components/channels/TechStackChannel';
 import { FrequenciesChannel } from './components/channels/FrequenciesChannel';
 import { ContactChannel } from './components/channels/ContactChannel';
+import { Radio, Music } from 'lucide-react';
 
 export function App() {
   const { channels } = PORTFOLIO_DATA;
@@ -19,14 +21,19 @@ export function App() {
   const [currentChannelId, setCurrentChannelId] = useState(1);
   const [historyStack, setHistoryStack] = useState([]);
   const [isPoweredOn, setIsPoweredOn] = useState(true);
+  const [powerTransition, setPowerTransition] = useState('idle'); // 'idle' | 'turning-off' | 'turning-on'
   const [isTuning, setIsTuning] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scanlinesEnabled, setScanlinesEnabled] = useState(true);
+  const [isMobileRemoteOpen, setIsMobileRemoteOpen] = useState(false);
 
-  // Audio Hook
+  // Audio Hook with BGM & Analyser
   const {
     soundEnabled,
     toggleSound,
+    bgmEnabled,
+    toggleBgm,
+    getAnalyser,
     playDialClick,
     playStaticSweep,
     playPowerTone,
@@ -52,7 +59,7 @@ export function App() {
     return () => clearTimeout(timer);
   }, [currentChannelId, playDialClick, playStaticSweep]);
 
-  // Stepper: Previous Channel (numeric or cycle)
+  // Stepper: Previous Channel
   const handlePrevChannel = useCallback(() => {
     const prevId = currentChannelId === 1 ? channels.length : currentChannelId - 1;
     handleSelectChannel(prevId);
@@ -80,14 +87,24 @@ export function App() {
     }, 300);
   }, [historyStack, playDialClick, playStaticSweep]);
 
-  // Power Toggle
+  // Power Toggle with Realistic Phosphor Collapse Effect
   const handleTogglePower = useCallback(() => {
-    setIsPoweredOn(prev => {
-      const next = !prev;
-      playPowerTone(next);
-      return next;
-    });
-  }, [playPowerTone]);
+    if (isPoweredOn) {
+      setPowerTransition('turning-off');
+      playPowerTone(false);
+      setTimeout(() => {
+        setIsPoweredOn(false);
+        setPowerTransition('idle');
+      }, 450);
+    } else {
+      setIsPoweredOn(true);
+      setPowerTransition('turning-on');
+      playPowerTone(true);
+      setTimeout(() => {
+        setPowerTransition('idle');
+      }, 450);
+    }
+  }, [isPoweredOn, playPowerTone]);
 
   // Menu Modal Toggle
   const handleToggleMenu = useCallback(() => {
@@ -107,7 +124,6 @@ export function App() {
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Don't intercept when user is typing inside an input or textarea
       if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
       const key = e.key.toLowerCase();
@@ -122,16 +138,22 @@ export function App() {
       } else if (key === 's') {
         e.preventDefault();
         toggleSound();
+      } else if (key === 'b') {
+        e.preventDefault();
+        toggleBgm();
       } else if (key === 'escape') {
         if (isMenuOpen) {
           setIsMenuOpen(false);
+        }
+        if (isMobileRemoteOpen) {
+          setIsMobileRemoteOpen(false);
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleSelectChannel, handleToggleMenu, toggleSound, isMenuOpen]);
+  }, [handleSelectChannel, handleToggleMenu, toggleSound, toggleBgm, isMenuOpen, isMobileRemoteOpen]);
 
   // Render current active channel screen
   const renderCurrentChannel = () => {
@@ -167,6 +189,8 @@ export function App() {
           <FrequenciesChannel
             onPlayClick={playDialClick}
             onPlayNote={playNote}
+            getAnalyser={getAnalyser}
+            isBgmActive={bgmEnabled}
           />
         );
       case 6:
@@ -188,27 +212,78 @@ export function App() {
 
   return (
     <EditorialShell currentChannelId={currentChannelId}>
-      {/* Vintage Television Hardware Set */}
-      <TvFrame
-        channels={channels}
-        currentChannelId={currentChannelId}
-        onSelectChannel={handleSelectChannel}
-        onPrevChannel={handlePrevChannel}
-        onNextChannel={handleNextChannel}
-        onBack={handleBack}
-        canGoBack={historyStack.length > 0}
-        isPoweredOn={isPoweredOn}
-        onTogglePower={handleTogglePower}
-        soundEnabled={soundEnabled}
-        onToggleSound={toggleSound}
-        scanlinesEnabled={scanlinesEnabled}
-        onToggleScanlines={handleToggleScanlines}
-        onOpenMenu={handleToggleMenu}
-        onPlayClick={playDialClick}
-        isTuning={isTuning}
-      >
-        {renderCurrentChannel()}
-      </TvFrame>
+      <div className="w-full flex items-center justify-center gap-4">
+        {/* Vintage Television Hardware Set */}
+        <TvFrame
+          channels={channels}
+          currentChannelId={currentChannelId}
+          onSelectChannel={handleSelectChannel}
+          onPrevChannel={handlePrevChannel}
+          onNextChannel={handleNextChannel}
+          onBack={handleBack}
+          canGoBack={historyStack.length > 0}
+          isPoweredOn={isPoweredOn}
+          onTogglePower={handleTogglePower}
+          soundEnabled={soundEnabled}
+          onToggleSound={toggleSound}
+          scanlinesEnabled={scanlinesEnabled}
+          onToggleScanlines={handleToggleScanlines}
+          onOpenMenu={handleToggleMenu}
+          onPlayClick={playDialClick}
+          isTuning={isTuning}
+          powerTransition={powerTransition}
+        >
+          {renderCurrentChannel()}
+        </TvFrame>
+
+        {/* Handheld Remote Control (Desktop: docked side-panel; Mobile: drawer) */}
+        <RemoteControl
+          channels={channels}
+          currentChannelId={currentChannelId}
+          onSelectChannel={handleSelectChannel}
+          onPrevChannel={handlePrevChannel}
+          onNextChannel={handleNextChannel}
+          onTogglePower={handleTogglePower}
+          isPoweredOn={isPoweredOn}
+          soundEnabled={soundEnabled}
+          onToggleSound={toggleSound}
+          bgmEnabled={bgmEnabled}
+          onToggleBgm={toggleBgm}
+          onOpenMenu={handleToggleMenu}
+          onPlayClick={playDialClick}
+          isOpenMobile={isMobileRemoteOpen}
+          onCloseMobile={() => setIsMobileRemoteOpen(false)}
+        />
+      </div>
+
+      {/* Mobile Floating Action Button: Quick Remote Trigger */}
+      <div className="xl:hidden fixed bottom-4 right-4 z-40 flex items-center gap-2">
+        {/* Quick BGM toggle badge */}
+        <button
+          onClick={() => {
+            playDialClick();
+            toggleBgm();
+          }}
+          className={`retro-btn px-2.5 py-1.5 rounded-full border-2 border-deepBlack font-pixel text-[8px] flex items-center gap-1 shadow-pixel ${
+            bgmEnabled ? 'bg-signalCyan text-deepBlack font-bold' : 'bg-zinc-900 text-paperWhite'
+          }`}
+        >
+          <Music className="w-3 h-3" />
+          <span>{bgmEnabled ? 'BGM: ON' : 'BGM: OFF'}</span>
+        </button>
+
+        {/* Mobile Remote Drawer Launcher */}
+        <button
+          onClick={() => {
+            playDialClick();
+            setIsMobileRemoteOpen(true);
+          }}
+          className="retro-btn bg-acid text-deepBlack font-pixel text-[9px] px-3 py-1.5 rounded-full border-2 border-deepBlack shadow-pixel font-bold flex items-center gap-1.5 hover:bg-acid-hover"
+        >
+          <Radio className="w-3.5 h-3.5 animate-pulse" />
+          <span>IR REMOTE</span>
+        </button>
+      </div>
 
       {/* Fullscreen TV Guide / EPG Menu Modal */}
       <TvGuideModal

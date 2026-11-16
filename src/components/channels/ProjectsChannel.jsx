@@ -163,3 +163,4 @@ export function ProjectsChannel({ onPlayClick }) {
     </div>
   );
 }
+

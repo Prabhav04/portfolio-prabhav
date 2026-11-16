@@ -26,3 +26,4 @@ Transform Prabhav Narayanan's developer and musical portfolio into an interactiv
    - CRT Effects toggle (scanlines, screen warp, flicker)
    - Keyboard shortcuts (1-6 for channels, M for menu, S for sound)
 5. **Responsiveness**: Fully responsive desktop editorial layout + streamlined mobile retro pocket-TV layout.
+

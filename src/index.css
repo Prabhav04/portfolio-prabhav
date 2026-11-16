@@ -119,3 +119,64 @@
 .portrait-glow {
   filter: drop-shadow(4px 4px 0px #D9E32A) drop-shadow(-4px -4px 0px #00E5FF);
 }
+
+/* CRT Power Off Collapse Animation */
+.crt-turning-off {
+  animation: crtCollapse 0.45s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes crtCollapse {
+  0% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1, 0.003);
+    filter: brightness(4);
+    opacity: 1;
+    background: #FFFFFF;
+  }
+  80% {
+    transform: scale(0.005, 0.003);
+    filter: brightness(8);
+    opacity: 1;
+    background: #FFFFFF;
+  }
+  100% {
+    transform: scale(0, 0);
+    filter: brightness(0);
+    opacity: 0;
+  }
+}
+
+/* CRT Power On Flash & Expand Animation */
+.crt-turning-on {
+  animation: crtExpand 0.45s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes crtExpand {
+  0% {
+    transform: scale(0.005, 0.003);
+    filter: brightness(8);
+    opacity: 1;
+    background: #FFFFFF;
+  }
+  40% {
+    transform: scale(1, 0.004);
+    filter: brightness(5);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1, 1);
+    filter: brightness(2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+
+

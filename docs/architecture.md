@@ -12,3 +12,4 @@
   - `tvSettings`: sound enabled, crtFx enabled, menuOpen, powerState (on/standby).
   - Centralized portfolio data module derived from `data.md`.
 - **Testing & Verification**: Production build via `npm run build` + unit/component testing with Vitest/Playwright or smoke test scripts.
+

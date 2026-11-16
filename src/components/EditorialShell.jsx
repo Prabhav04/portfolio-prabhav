@@ -108,3 +108,4 @@ export function EditorialShell({ children, currentChannelId }) {
     </div>
   );
 }
+

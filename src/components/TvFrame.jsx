@@ -21,7 +21,8 @@ export function TvFrame({
   onToggleScanlines,
   onOpenMenu,
   onPlayClick,
-  isTuning
+  isTuning,
+  powerTransition
 }) {
   const currentChan = channels.find(c => c.id === currentChannelId) || channels[0];
 
@@ -94,6 +95,7 @@ export function TvFrame({
               <CrtEffects
                 isTuning={isTuning}
                 isPoweredOn={isPoweredOn}
+                powerTransition={powerTransition}
                 scanlinesEnabled={scanlinesEnabled}
               />
             </div>
@@ -139,3 +141,4 @@ export function TvFrame({
     </div>
   );
 }
+

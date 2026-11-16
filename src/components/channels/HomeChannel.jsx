@@ -122,3 +122,4 @@ export function HomeChannel({ onSelectChannel, onOpenMenu, onPlayClick }) {
     </div>
   );
 }
+

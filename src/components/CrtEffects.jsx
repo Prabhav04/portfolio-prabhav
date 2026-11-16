@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export function CrtEffects({ isTuning, isPoweredOn, scanlinesEnabled = true }) {
+export function CrtEffects({ isTuning, isPoweredOn, powerTransition, scanlinesEnabled = true }) {
   const canvasRef = useRef(null);
 
   // Procedural static noise animation on canvas for performance
@@ -41,8 +41,21 @@ export function CrtEffects({ isTuning, isPoweredOn, scanlinesEnabled = true }) {
 
   return (
     <>
+      {/* Phosphor Collapse Effect Layer during power transitions */}
+      {powerTransition === 'turning-off' && (
+        <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center bg-deepBlack">
+          <div className="w-full h-full crt-turning-off bg-acid/90 shadow-[0_0_50px_#ffffff]" />
+        </div>
+      )}
+
+      {powerTransition === 'turning-on' && (
+        <div className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center bg-deepBlack">
+          <div className="w-full h-full crt-turning-on bg-acid/90 shadow-[0_0_50px_#ffffff]" />
+        </div>
+      )}
+
       {/* Static Noise Overlay when Tuning or Off */}
-      {(!isPoweredOn || isTuning) && (
+      {(!isPoweredOn || isTuning) && powerTransition === 'idle' && (
         <div className="absolute inset-0 z-40 bg-deepBlack flex items-center justify-center overflow-hidden">
           <canvas
             ref={canvasRef}

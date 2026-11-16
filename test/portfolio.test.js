@@ -66,3 +66,4 @@ test('Production build verification', async (t) => {
     assert.ok(htmlContent.includes('PRABHAV.exe'), 'Title or branding in index.html');
   });
 });
+

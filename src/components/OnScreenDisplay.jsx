@@ -29,3 +29,4 @@ export function OnScreenDisplay({ currentChannel, volume, isMuted }) {
     </div>
   );
 }
+
